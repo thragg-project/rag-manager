@@ -1,0 +1,232 @@
+openapi: 3.0.3
+info:
+  title: Rag Manager API
+  version: 1.0.0
+  description: API for managing projects, data sources, and storages.
+servers:
+  - url: /api/v1
+paths:
+  /projects:
+    get:
+      operationId: searchProjects
+      summary: Search projects
+      responses:
+        "200":
+          description: Projects list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      summary: Create project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+      responses:
+        "201":
+          description: Created project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+  /projects/{projectId}:
+    get:
+      operationId: getProject
+      summary: Get project
+      parameters:
+        - $ref: "#/components/parameters/ProjectID"
+      responses:
+        "200":
+          description: Project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Project not found
+  /datasources:
+    get:
+      operationId: searchDataSources
+      summary: Search data sources
+      responses:
+        "200":
+          description: Data sources list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataSource"
+    post:
+      operationId: createDataSource
+      summary: Create data source
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataSource"
+      responses:
+        "201":
+          description: Created data source
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataSource"
+  /datasources/{dataSourceId}:
+    get:
+      operationId: getDataSource
+      summary: Get data source
+      parameters:
+        - $ref: "#/components/parameters/DataSourceID"
+      responses:
+        "200":
+          description: Data source
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataSource"
+        "404":
+          description: Data source not found
+  /storages:
+    get:
+      operationId: searchStorages
+      summary: Search storages
+      responses:
+        "200":
+          description: Storages list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Storage"
+    post:
+      operationId: createStorage
+      summary: Create storage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Storage"
+      responses:
+        "201":
+          description: Created storage
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Storage"
+  /storages/{storageId}:
+    get:
+      operationId: getStorage
+      summary: Get storage
+      parameters:
+        - $ref: "#/components/parameters/StorageID"
+      responses:
+        "200":
+          description: Storage
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Storage"
+        "404":
+          description: Storage not found
+components:
+  parameters:
+    ProjectID:
+      name: projectId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    DataSourceID:
+      name: dataSourceId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    StorageID:
+      name: storageId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    Project:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - dataSources
+        - storage
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        dataSources:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataSource"
+        storage:
+          $ref: "#/components/schemas/Storage"
+    DataSource:
+      type: object
+      additionalProperties: false
+      required:
+        - provider
+        - credentials
+        - dataType
+      properties:
+        id:
+          type: integer
+          format: int64
+        provider:
+          type: string
+          example: s3
+        credentials:
+          type: object
+          additionalProperties:
+            type: string
+        dataType:
+          type: string
+          example: html
+    Storage:
+      type: object
+      additionalProperties: false
+      required:
+        - collection
+        - embeddingModel
+        - dimensions
+        - metric
+      properties:
+        id:
+          type: integer
+          format: int64
+        collection:
+          type: string
+        embeddingModel:
+          type: string
+        dimensions:
+          type: string
+        metric:
+          type: string

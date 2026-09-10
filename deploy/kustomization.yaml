@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./extra-resources/go-template.Namespace.yaml
+  - ./resources/rag-manager-migrate.rag-manager.Job.yaml
+  - ./resources/rag-manager.rag-manager.Deployment.yaml
+  - ./resources/rag-manager.rag-manager.Service.yaml
+
+images:
+  - name: application-image
+    newName: docker.io/fr33dman/thragg-project-rag-manager
+    newTag: latest
