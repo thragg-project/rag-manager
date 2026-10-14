@@ -6,8 +6,3 @@ resources:
   - ./resources/rag-manager-migrate.rag-manager.Job.yaml
   - ./resources/rag-manager.rag-manager.Deployment.yaml
   - ./resources/rag-manager.rag-manager.Service.yaml
-
-images:
-  - name: rag-manager-image
-    newName: docker.io/fr33dman/thragg-project-rag-manager
-    newTag: latest
