@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: go-template
-  namespace: go-template
+  name: rag-manager
+  namespace: rag-manager-system
   labels:
-    app.kubernetes.io/name: go-template
+    app.kubernetes.io/name: rag-manager-system
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/name: go-template
+      app.kubernetes.io/name: rag-manager-system
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: go-template
+        app.kubernetes.io/name: rag-manager-system
     spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: go-template
-          image: application-image
+        - name: rag-manager
+          image: rag-manager-image
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
@@ -42,27 +42,27 @@ spec:
             - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
-                  name: go-template-postgres
+                  name: rag-manager-postgres
                   key: host
             - name: POSTGRES_PORT
               valueFrom:
                 secretKeyRef:
-                  name: go-template-postgres
+                  name: rag-manager-postgres
                   key: port
             - name: POSTGRES_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: go-template-postgres
+                  name: rag-manager-postgres
                   key: database
             - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: go-template-postgres
+                  name: rag-manager-postgres
                   key: username
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: go-template-postgres
+                  name: rag-manager-postgres
                   key: password
             - name: GOBOX_GOOSE_TABLE_NAME
               value: goose_db_version_outbox
